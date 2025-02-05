@@ -15,6 +15,7 @@ namespace Community.OData.Linq.xTests
         private static readonly DateTime dtLocal = new DateTime(2018, 1, 26, 0, 0, 0, DateTimeKind.Local);
         private static readonly DateTime dt = new DateTime(2018, 1, 26, 0, 0, 0);
         private static readonly DateTimeOffset dto = new DateTimeOffset(dt, TimeZoneInfo.Local.BaseUtcOffset);
+        private static readonly DateOnly do1 = new(2018, 1, 26);
         //private readonly DateTimeOffset dtoUtc = new DateTimeOffset(new DateTime(2018, 1, 26).ToUniversalTime());
 
         public DateTimeFilterTests(ITestOutputHelper output)
@@ -101,7 +102,7 @@ namespace Community.OData.Linq.xTests
             string filter = $"DateTime eq {value}";
             output.WriteLine(filter);
 
-            var result = SimpleClass.CreateQuery().OData(c=>c.QuerySettings.DefaultTimeZone = TimeZoneInfo.Utc).Filter(filter).ToArray();
+            var result = SimpleClass.CreateQuery().OData(c => c.QuerySettings.DefaultTimeZone = TimeZoneInfo.Utc).Filter(filter).ToArray();
             Assert.Single(result);
             output.WriteLine(result.Single().DateTime.ToString() + "UTC");
 
@@ -167,5 +168,17 @@ namespace Community.OData.Linq.xTests
             Assert.Equal(TimeZoneInfo.Utc, TimeZoneInfo.Utc);
             Assert.Equal(TimeZoneInfo.Utc.GetHashCode(), TimeZoneInfo.Utc.GetHashCode());
         }
-    }                
+
+        [Fact]
+        public void DateOnlyFilterWorks()
+        {
+            string value = do1.ToString("yyyy-MM-dd");
+            string filter = $"{nameof(SimpleClass.DateOnly)} eq {value}";
+            output.WriteLine(filter);
+
+            var result = SimpleClass.CreateQuery().OData().Filter(filter).ToArray();
+            Assert.Empty(result);
+        }
+
+    }
 }
