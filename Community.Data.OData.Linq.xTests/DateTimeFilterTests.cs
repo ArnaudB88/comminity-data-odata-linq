@@ -177,7 +177,8 @@ namespace Community.OData.Linq.xTests
             output.WriteLine(filter);
 
             var result = SimpleClass.CreateQuery().OData().Filter(filter).ToArray();
-            Assert.Empty(result);
+            Assert.Single(result);
+            Assert.True(result.First().DateOnly == do1);
         }
 
     }
