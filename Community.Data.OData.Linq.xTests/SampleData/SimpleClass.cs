@@ -1,5 +1,5 @@
-﻿using System.Runtime.Serialization;
-using Community.OData.Linq.Annotations;
+﻿using Community.OData.Linq.Annotations;
+using System.Runtime.Serialization;
 
 namespace Community.OData.Linq.xTests.SampleData
 {
@@ -12,23 +12,27 @@ namespace Community.OData.Linq.xTests.SampleData
         private static readonly SimpleClass[] items =
         {
             new SimpleClass {
-                Id = 1, 
+                Id = 1,
                 Name = "n1",
-                DateTimeOffset = new DateTimeOffset(new DateTime(2018, 1, 26), TimeZoneInfo.Local.BaseUtcOffset), 
-                DateTime = new DateTime(2018, 1, 26), 
-                TestEnum = TestEnum.Item1, 
-                NameToIgnore = "ni1", 
+                DateTimeOffset = new DateTimeOffset(new DateTime(2018, 1, 26), TimeZoneInfo.Local.BaseUtcOffset),
+                DateTime = new DateTime(2018, 1, 26),
+                DateOnly = new DateOnly(2018, 1, 26),
+                TimeOnly = new TimeOnly(12, 34, 56),
+                TestEnum = TestEnum.Item1,
+                NameToIgnore = "ni1",
                 NameNotFilter="nf1"},
             new SimpleClass {
-                Id = 2, 
+                Id = 2,
                 Name = "n2",
-                DateTimeOffset = new DateTimeOffset(new DateTime(2001, 1, 26), TimeZoneInfo.Local.BaseUtcOffset), 
-                DateTime = new DateTime(2001, 1, 26), 
-                TestEnum = TestEnum.Item2, 
-                NameToIgnore = "ni1", 
+                DateTimeOffset = new DateTimeOffset(new DateTime(2001, 1, 26), TimeZoneInfo.Local.BaseUtcOffset),
+                DateTime = new DateTime(2001, 1, 26),
+                DateOnly = new DateOnly(2001, 1, 26),
+                TimeOnly = new TimeOnly(1, 2, 3),
+                TestEnum = TestEnum.Item2,
+                NameToIgnore = "ni1",
                 NameNotFilter="nf2"}
         };
-        
+
         public static IQueryable<SimpleClass> CreateQuery()
         {
             return items.AsQueryable();
@@ -41,6 +45,10 @@ namespace Community.OData.Linq.xTests.SampleData
         public DateTime DateTime { get; set; }
 
         public DateTimeOffset DateTimeOffset { get; set; }
+
+        public DateOnly DateOnly { get; set; }
+
+        public TimeOnly TimeOnly { get; set; }
 
         public TestEnum TestEnum { get; set; }
 
@@ -55,5 +63,5 @@ namespace Community.OData.Linq.xTests.SampleData
 
         [NotMapped]
         public int NotMapped { get; set; }
-    }    
+    }
 }

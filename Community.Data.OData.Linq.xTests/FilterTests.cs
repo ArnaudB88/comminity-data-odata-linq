@@ -1,20 +1,17 @@
 ﻿namespace Community.OData.Linq.xTests
 {
-    using System.Linq;
-
     using Community.OData.Linq.xTests.SampleData;
-
     using Microsoft.OData;
-
+    using System.Linq;
     using Xunit;
 
     public class FilterTests
-    {        
+    {
         [Fact]
         public void WhereById()
         {
             var result = SimpleClass.CreateQuery().OData().Filter("Id eq 1").ToArray();
-            
+
             Assert.Single(result);
             Assert.Equal(1, result[0].Id);
         }
@@ -25,7 +22,7 @@
             var result = SimpleClass.CreateQuery().OData().Filter("Name eq 'n1'").ToArray();
 
             Assert.Single(result);
-            Assert.Equal("n1", result[0].Name);            
+            Assert.Equal("n1", result[0].Name);
         }
 
         [Fact]
@@ -39,7 +36,7 @@
 
         [Fact]
         public void WhereByNameCaseSensitiveKeyByConfigThowException()
-        {            
+        {
             Assert.Throws<ODataException>(
                 () => SimpleClass.CreateQuery().OData(s => s.EnableCaseInsensitive = false).Filter("name eq 'n1'"));
         }
@@ -50,7 +47,7 @@
             Assert.Throws<ODataException>(
                 () => SimpleClass.CreateQuery().OData().Filter("qwe"));
         }
-                
+
         [Fact]
         public void WhereByEnumString()
         {
@@ -98,6 +95,15 @@
         }
 
         [Fact]
+        public void WhereByEnumStringWithInKeyword()
+        {
+            var result = SimpleClass.CreateQuery().OData().Filter($"{nameof(SimpleClass.TestEnum)} in ('{nameof(TestEnum.Item2)}')").ToArray();
+
+            Assert.Single(result);
+            Assert.Equal("n2", result[0].Name);
+        }
+
+        [Fact]
         public void WhereByNonFilterableThrowException()
         {
             Assert.Throws<ODataException>(
@@ -116,6 +122,6 @@
         {
             Assert.Throws<ODataException>(
                 () => SimpleClass.CreateQuery().OData(s => s.EnableCaseInsensitive = false).Filter($"{nameof(SimpleClass.NameToIgnore)} eq 'ni1'"));
-        }        
+        }
     }
 }
